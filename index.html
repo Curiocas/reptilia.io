@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>REPTILIA.IO — Jogo Educativo</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323:wght@400&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/base.css" />
+  <link rel="stylesheet" href="css/ui.css" />
+  <link rel="stylesheet" href="css/map.css" />
+  <link rel="stylesheet" href="css/battle.css" />
+  <link rel="stylesheet" href="css/dialog.css" />
+  <link rel="stylesheet" href="css/quiz.css" />
+  <link rel="stylesheet" href="css/aesthetic.css" />
+</head>
+<body>
+
+<!-- ══════════════════════════════════════════════
+     SCREEN: TITLE
+═══════════════════════════════════════════════ -->
+<div id="screen-title" class="screen active">
+  <div class="title-bg">
+    <div class="title-stars" id="titleStars"></div>
+    <div class="title-clouds" id="titleClouds"></div>
+  </div>
+  <div class="title-content">
+    <div class="title-logo">
+      <div class="logo-shadow">REPTILIA</div>
+      <div class="logo-main">REPTILIA</div>
+      <div class="logo-sub">.IO</div>
+    </div>
+    <div class="title-subtitle pixel-text">Aventura Educativa dos Répteis</div>
+    <div class="title-reptiles">
+      <div class="sprite-title sprite-snake" title="Cobra"></div>
+      <div class="sprite-title sprite-dino" title="Dinossauro"></div>
+      <div class="sprite-title sprite-turtle" title="Tartaruga"></div>
+    </div>
+    <div class="title-press pixel-text blink-slow">▶ PRESSIONE ENTER / TOQUE AQUI</div>
+    <div class="title-version pixel-text">v1.0 — Biologia Ensino Médio</div>
+  </div>
+  <button class="title-click-zone" id="titleStart" aria-label="Iniciar jogo"></button>
+</div>
+
+<!-- ══════════════════════════════════════════════
+     SCREEN: NAME ENTRY
+═══════════════════════════════════════════════ -->
+<div id="screen-name" class="screen">
+  <div class="name-scene" aria-hidden="true">
+    <img class="name-scene-sprite name-leaf-a" src="assets/img/ui_leaf_cluster.png" alt="" />
+    <img class="name-scene-sprite name-leaf-b" src="assets/img/ui_fern.png" alt="" />
+    <img class="name-scene-sprite name-rock" src="assets/img/ui_sunrock.png" alt="" />
+    <img class="name-scene-sprite name-compass" src="assets/img/ui_compass.png" alt="" />
+  </div>
+  <div class="gba-frame">
+    <div class="dialog-box name-dialog">
+      <div class="dialog-header pixel-text">NOVO AVENTUREIRO</div>
+      <div class="trainer-pass">
+        <div class="trainer-pass-avatar" id="trainerPassAvatar">
+          <img src="assets/img/cientista1.png" alt="Avatar do jogador" />
+        </div>
+        <div class="trainer-pass-copy">
+          <span class="pixel-text trainer-pass-kicker">REGISTRO DE CAMPO</span>
+          <span class="pixel-text trainer-pass-title">Liga Reptilia</span>
+          <span class="pixel-text trainer-pass-note">Perfil, turma e ranking online</span>
+        </div>
+      </div>
+      <div class="dialog-text pixel-text">Qual é o seu nome,<br>jovem explorador?</div>
+      <div class="name-input-row">
+        <span class="pixel-text name-cursor">▶</span>
+        <input type="text" id="playerNameInput" class="pixel-input" maxlength="10" placeholder="SEU NOME" autocomplete="off" />
+      </div>
+      <div class="gender-select" id="genderSelect">
+        <button class="gender-card active" data-gender="male" type="button">
+          <img src="assets/img/cientista1.png" alt="Cientista masculino" />
+          <span class="pixel-text">MASC.</span>
+        </button>
+        <button class="gender-card" data-gender="female" type="button">
+          <img src="assets/img/cientista2.png" alt="Cientista feminino" />
+          <span class="pixel-text">FEM.</span>
+        </button>
+      </div>
+      <div class="class-input-row">
+        <span class="pixel-text name-cursor">#</span>
+        <input type="text" id="classCodeInput" class="pixel-input" maxlength="18" placeholder="CODIGO DA TURMA" autocomplete="off" />
+      </div>
+      <div class="name-hint pixel-text">Máximo 10 caracteres</div>
+      <button class="btn-pixel btn-green" id="btnConfirmName">CONFIRMAR ►</button>
+    </div>
+    <div class="professor-sprite"></div>
+    <div class="dialog-box speech-professor">
+      <p class="pixel-text">Prof. Rex liberou seu<br>registro da expedicao.<br>Escolha o visual e a turma!</p>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════
+     SCREEN: MAP (OVERWORLD)
+═══════════════════════════════════════════════ -->
+<div id="screen-map" class="screen">
+  <!-- HUD TOP -->
+  <div class="hud-top">
+    <div class="hud-player">
+      <div class="hud-avatar"></div>
+      <div class="hud-info">
+        <div class="pixel-text hud-name" id="hudPlayerName">JOGADOR</div>
+        <div class="hud-xp-bar-wrap">
+          <div class="pixel-text hud-xp-label">XP</div>
+          <div class="hud-xp-bar"><div class="hud-xp-fill" id="hudXpFill"></div></div>
+          <div class="pixel-text hud-xp-val" id="hudXpVal">0</div>
+        </div>
+        <div class="hud-badges" id="hudBadges"></div>
+      </div>
+    </div>
+    <div class="hud-score">
+      <div class="pixel-text">PONTOS</div>
+      <div class="pixel-text hud-score-val" id="hudScore">0</div>
+    </div>
+  </div>
+
+  <!-- MAP CANVAS AREA -->
+  <div class="map-wrap" id="mapWrap">
+    <canvas id="mapCanvas" width="768" height="512"></canvas>
+    <!-- Player character on map -->
+    <div class="map-player" id="mapPlayer">
+      <div class="player-sprite walking" id="playerSprite"></div>
+    </div>
+    <!-- Zone labels -->
+    <div class="zone-label" id="zoneLabelCarac" style="left:60px;top:60px;">
+      <span class="pixel-text">Zona 1<br>Características</span>
+    </div>
+    <div class="zone-label" id="zoneLabelClasses" style="left:280px;top:50px;">
+      <span class="pixel-text">Zona 2<br>Classes</span>
+    </div>
+    <div class="zone-label" id="zoneLabelAnat" style="left:50px;top:180px;">
+      <span class="pixel-text">Zona 3<br>Anatomia</span>
+    </div>
+    <div class="zone-label" id="zoneLabelReprod" style="left:280px;top:170px;">
+      <span class="pixel-text">Zona 4<br>Reprodução</span>
+    </div>
+    <div class="zone-label" id="zoneLabelEvol" style="left:165px;top:240px;">
+      <span class="pixel-text">Zona 5<br>Evolução</span>
+    </div>
+    <div class="zone-label" id="zoneLabelVenom" style="left:380px;top:220px;">
+      <span class="pixel-text">Zona 6<br>Peçonhentos</span>
+    </div>
+  </div>
+
+  <!-- D-PAD & BUTTONS -->
+  <div class="controls-bar">
+    <div class="dpad" id="dpad">
+      <button class="dpad-btn dpad-up" id="dpadUp">▲</button>
+      <button class="dpad-btn dpad-left" id="dpadLeft">◀</button>
+      <button class="dpad-btn dpad-center"></button>
+      <button class="dpad-btn dpad-right" id="dpadRight">▶</button>
+      <button class="dpad-btn dpad-down" id="dpadDown">▼</button>
+    </div>
+    <div class="action-btns">
+      <button class="ab-btn btn-b" id="btnB">B</button>
+      <button class="ab-btn btn-a" id="btnA">A</button>
+    </div>
+    <div class="start-select">
+      <button class="ss-btn" id="btnSelect">SELECT</button>
+      <button class="ss-btn" id="btnStart">START</button>
+    </div>
+  </div>
+
+  <!-- MINI POKEDEX / MENU -->
+  <div class="map-menu" id="mapMenu" style="display:none;">
+    <div class="menu-box">
+      <div class="pixel-text menu-title">▶ MENU</div>
+      <button class="menu-item pixel-text" id="menuPokedex">REPTIDEX</button>
+      <button class="menu-item pixel-text" id="menuAchievements">CONQUISTAS</button>
+      <button class="menu-item pixel-text" id="menuAudio">SOM: ON</button>
+      <button class="menu-item pixel-text" id="menuRanking">RANKING</button>
+      <button class="menu-item pixel-text" id="menuClose">FECHAR</button>
+    </div>
+  </div>
+  <div class="npc-dialog dialog-box" id="npcDialog" style="display:none;">
+    <div class="npc-portrait" id="npcPortrait"></div>
+    <div class="npc-copy">
+      <div class="pixel-text npc-name" id="npcName"></div>
+      <div class="pixel-text npc-text" id="npcText"></div>
+      <button class="btn-pixel btn-green" id="btnNpcClose">ENTENDI</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════
+     SCREEN: ZONE (LESSON + QUIZ)
+═══════════════════════════════════════════════ -->
+<div id="screen-zone" class="screen">
+  <div class="zone-header">
+    <button class="btn-pixel btn-back" id="btnBackMap">◀ MAPA</button>
+    <div class="pixel-text zone-title-text" id="zoneTitleText">ZONA 1</div>
+    <div class="zone-progress-wrap">
+      <div class="pixel-text">PROGRESSO</div>
+      <div class="zone-prog-bar"><div class="zone-prog-fill" id="zoneProgFill"></div></div>
+    </div>
+  </div>
+
+  <!-- LESSON PANEL -->
+  <div id="lessonPanel" class="lesson-panel">
+    <div class="lesson-sprite-area" id="lessonSpriteArea">
+      <div class="lesson-reptile-sprite" id="lessonSprite"></div>
+      <div class="speech-bubble" id="lessonSpeech"></div>
+    </div>
+    <div class="dialog-box lesson-dialog" id="lessonDialog">
+      <div class="lesson-title pixel-text" id="lessonTitle"></div>
+      <div class="lesson-body pixel-text" id="lessonBody"></div>
+      <div class="lesson-nav">
+        <button class="btn-pixel btn-blue" id="btnPrevLesson">◀ ANTERIOR</button>
+        <span class="pixel-text lesson-counter" id="lessonCounter">1/5</span>
+        <button class="btn-pixel btn-green" id="btnNextLesson">PRÓXIMO ▶</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- QUIZ PANEL -->
+  <div id="quizPanel" class="quiz-panel" style="display:none;">
+    <div class="quiz-top">
+      <div class="quiz-info">
+        <span class="pixel-text quiz-q-count" id="quizQCount">Q 1/5</span>
+        <div class="quiz-timer-bar"><div class="quiz-timer-fill" id="quizTimerFill"></div></div>
+        <span class="pixel-text quiz-timer-val" id="quizTimerVal">30</span>
+      </div>
+      <div class="quiz-battle-scene">
+        <div class="quiz-enemy-sprite" id="quizEnemySprite"></div>
+        <div class="quiz-enemy-hp">
+          <span class="pixel-text quiz-enemy-name" id="quizEnemyName">GUARDIÃO</span>
+          <div class="hp-bar-wrap"><div class="hp-bar-fill" id="quizEnemyHp"></div></div>
+        </div>
+        <div class="quiz-player-sprite" id="quizPlayerSprite"></div>
+        <div class="quiz-player-hp">
+          <span class="pixel-text">VOCÊ</span>
+          <div class="hp-bar-wrap"><div class="hp-bar-fill hp-green" id="quizPlayerHp"></div></div>
+        </div>
+      </div>
+    </div>
+    <div class="quiz-question-box dialog-box">
+      <div class="pixel-text quiz-question" id="quizQuestion"></div>
+    </div>
+    <div class="quiz-options" id="quizOptions"></div>
+    <div class="quiz-feedback dialog-box" id="quizFeedback" style="display:none;">
+      <div class="pixel-text feedback-icon" id="feedbackIcon"></div>
+      <div class="pixel-text feedback-text" id="feedbackText"></div>
+      <div class="pixel-text feedback-exp" id="feedbackExp"></div>
+      <button class="btn-pixel btn-green" id="btnNextQ">CONTINUAR ▶</button>
+    </div>
+  </div>
+
+  <!-- ZONE COMPLETE -->
+  <div id="zoneComplete" class="zone-complete" style="display:none;">
+    <div class="complete-box dialog-box">
+      <div class="pixel-text complete-title">ZONA COMPLETA!</div>
+      <div class="complete-badge" id="completeBadge"></div>
+      <div class="pixel-text complete-score">Pontos ganhos: <span id="completePoints">0</span></div>
+      <div class="pixel-text complete-acc">Acertos: <span id="completeAcc">0/0</span></div>
+      <div class="fireworks" id="fireworks"></div>
+      <button class="btn-pixel btn-gold" id="btnBackMapComplete">◀ VOLTAR AO MAPA</button>
+    </div>
+  </div>
+</div>
+
+<div id="screen-achievements" class="screen">
+  <div class="achievements-container">
+    <div class="dialog-box achievements-box">
+      <div class="pixel-text achievements-title">CONQUISTAS</div>
+      <div class="achievements-list" id="achievementsList"></div>
+      <button class="btn-pixel btn-back" id="btnAchievementsBack">◀ VOLTAR</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════
+     SCREEN: REPTIDEX (Pokédex style)
+═══════════════════════════════════════════════ -->
+<div id="screen-reptidex" class="screen">
+  <div class="reptidex-frame">
+    <div class="reptidex-left">
+      <div class="pixel-text reptidex-brand">REPTIDEX</div>
+      <div class="reptidex-screen">
+        <div class="reptidex-sprite-area" id="reptidexSprite"></div>
+      </div>
+      <div class="pixel-text reptidex-caught" id="reptidexProgress">0/0</div>
+      <div class="reptidex-light red-light"></div>
+      <div class="reptidex-light yellow-light"></div>
+      <div class="reptidex-light green-light"></div>
+    </div>
+    <div class="reptidex-right">
+      <div class="reptidex-topbar">
+        <span class="pixel-text">ARQUIVO DE ESPECIES</span>
+        <span class="pixel-text" id="reptidexZoneHint">Complete zonas para registrar.</span>
+      </div>
+      <div class="reptidex-list" id="reptidexList"></div>
+      <div class="reptidex-info" id="reptidexInfo">
+        <div class="pixel-text reptidex-name" id="rdName"></div>
+        <div class="pixel-text reptidex-desc" id="rdDesc"></div>
+        <div class="pixel-text reptidex-stats" id="rdStats"></div>
+      </div>
+      <button class="btn-pixel btn-back" id="btnReptidexBack">◀ VOLTAR</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════
+     SCREEN: RANKING
+═══════════════════════════════════════════════ -->
+<div id="screen-ranking" class="screen">
+  <div class="ranking-container">
+    <div class="dialog-box ranking-box">
+      <div class="pixel-text ranking-title">HALL DA FAMA DA TURMA</div>
+      <div class="pixel-text ranking-status" id="rankingStatus">Verificando ranking online...</div>
+      <div class="ranking-list" id="rankingList">
+        <div class="pixel-text">Carregando...</div>
+      </div>
+      <button class="btn-pixel btn-back" id="btnRankingBack">◀ VOLTAR</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════
+     GLOBAL: TRANSITION OVERLAY
+═══════════════════════════════════════════════ -->
+<div id="transitionOverlay" class="transition-overlay"></div>
+
+<!-- ══════════════════════════════════════════════
+     GLOBAL: NOTIFICATION TOAST
+═══════════════════════════════════════════════ -->
+<div id="toast" class="toast pixel-text" style="display:none;"></div>
+
+<!-- ══════════════════════════════════════════════
+     FIREBASE SDK
+═══════════════════════════════════════════════ -->
+<script src="js/firebase-config.js"></script>
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+  import { getAuth, signInAnonymously } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+  import { getFirestore } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+  // ── CONFIGURE YOUR FIREBASE PROJECT HERE ──────────────────────────
+  const firebaseConfig = window.REPTILIA_FIREBASE_CONFIG || {
+    apiKey: "AIzaSyDEMO_REPLACE_WITH_YOUR_KEY",
+    authDomain: "reptilia-io.firebaseapp.com",
+    projectId: "reptilia-io",
+    storageBucket: "reptilia-io.appspot.com",
+    messagingSenderId: "000000000000",
+    appId: "1:000000000000:web:REPLACE"
+  };
+  // ──────────────────────────────────────────────────────────────────
+
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+  const db = getFirestore(app);
+
+  // Make available globally
+  window._firebaseAuth = auth;
+  window._firebaseDb = db;
+  window._firebaseSignInAnonymously = signInAnonymously;
+
+  // Sign in anonymously
+  signInAnonymously(auth).then(cred => {
+    window._firebaseUid = cred.user.uid;
+  }).catch(() => {
+    window._firebaseUid = 'offline_' + Math.random().toString(36).slice(2);
+  });
+</script>
+
+<!-- GAME SCRIPTS -->
+<script src="js/gamedata.js"></script>
+<script src="js/expansion.js"></script>
+<script src="js/depth-content.js"></script>
+<script src="js/firebase.js"></script>
+<script src="js/sprites.js"></script>
+<script src="js/mapengine.js"></script>
+<script src="js/dialog.js"></script>
+<script src="js/quiz-engine.js"></script>
+<script src="js/reptidex.js"></script>
+<script src="js/ranking.js"></script>
+<script src="js/audio.js"></script>
+<script src="js/game.js"></script>
+</body>
+</html>
