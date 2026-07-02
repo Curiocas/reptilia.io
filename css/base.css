@@ -1,0 +1,191 @@
+/* ═══════════════════════════════════════════════════════
+   REPTILIA.IO — BASE STYLES
+   Pokémon FireRed / GBA aesthetic
+═══════════════════════════════════════════════════════ */
+
+:root {
+  /* GBA Palette */
+  --gba-bg:        #1a1a2e;
+  --gba-dark:      #16213e;
+  --gba-mid:       #0f3460;
+  --gba-accent:    #e94560;
+  --gba-gold:      #f5a623;
+  --gba-green:     #3cb371;
+  --gba-blue:      #4a90d9;
+  --gba-red:       #cc3333;
+  --gba-purple:    #7b2d8b;
+
+  /* Screen colors */
+  --screen-bg:     #88c070;
+  --screen-light:  #c8e890;
+  --screen-mid:    #78b058;
+  --screen-dark:   #386038;
+  --screen-black:  #081820;
+
+  /* Dialog */
+  --dialog-bg:     #f8f8e8;
+  --dialog-border: #383838;
+  --dialog-shadow: #888866;
+
+  /* Text */
+  --text-dark:     #383838;
+  --text-light:    #f8f8e8;
+  --text-gold:     #d4a017;
+
+  /* Zone colors */
+  --zone-1:        #4fc3f7;
+  --zone-2:        #81c784;
+  --zone-3:        #ff8a65;
+  --zone-4:        #ce93d8;
+  --zone-5:        #ffb74d;
+  --zone-6:        #ef5350;
+
+  /* Sizes */
+  --pixel: 2px;
+  --font-pixel: 'Press Start 2P', monospace;
+  --font-vt: 'VT323', monospace;
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  -webkit-tap-highlight-color: transparent;
+}
+
+html, body {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: var(--gba-bg);
+  font-family: var(--font-pixel);
+  color: var(--text-light);
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
+}
+
+/* ── SCREEN SYSTEM ─────────────────────────────────── */
+.screen {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: none;
+  overflow: hidden;
+}
+.screen.active {
+  display: flex;
+  flex-direction: column;
+}
+
+/* ── PIXEL TEXT ─────────────────────────────────────── */
+.pixel-text {
+  font-family: var(--font-pixel);
+  line-height: 1.6;
+  letter-spacing: 0.02em;
+}
+
+/* ── TRANSITION OVERLAY ────────────────────────────── */
+.transition-overlay {
+  position: fixed;
+  inset: 0;
+  background: #000;
+  z-index: 9999;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s ease;
+}
+.transition-overlay.active {
+  opacity: 1;
+  pointer-events: all;
+}
+
+/* ── TOAST NOTIFICATION ────────────────────────────── */
+.toast {
+  position: fixed;
+  bottom: 80px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--gba-dark);
+  border: 3px solid var(--gba-gold);
+  color: var(--gba-gold);
+  padding: 8px 16px;
+  font-size: 10px;
+  z-index: 8000;
+  border-radius: 4px;
+  white-space: nowrap;
+  animation: toastFade 2.5s forwards;
+}
+@keyframes toastFade {
+  0%   { opacity:0; transform:translateX(-50%) translateY(10px); }
+  15%  { opacity:1; transform:translateX(-50%) translateY(0); }
+  75%  { opacity:1; }
+  100% { opacity:0; }
+}
+
+/* ── ANIMATIONS ────────────────────────────────────── */
+@keyframes blink {
+  0%,100% { opacity:1; }
+  50%      { opacity:0; }
+}
+.blink-slow  { animation: blink 1.2s step-end infinite; }
+.blink-fast  { animation: blink 0.6s step-end infinite; }
+
+@keyframes float {
+  0%,100% { transform: translateY(0); }
+  50%      { transform: translateY(-6px); }
+}
+.float { animation: float 2s ease-in-out infinite; }
+
+@keyframes shake {
+  0%,100% { transform: translateX(0); }
+  20%     { transform: translateX(-6px); }
+  40%     { transform: translateX(6px); }
+  60%     { transform: translateX(-4px); }
+  80%     { transform: translateX(4px); }
+}
+.shake { animation: shake 0.4s ease; }
+
+@keyframes popIn {
+  0%   { transform: scale(0) rotate(-10deg); opacity:0; }
+  70%  { transform: scale(1.1) rotate(3deg); }
+  100% { transform: scale(1) rotate(0); opacity:1; }
+}
+.pop-in { animation: popIn 0.4s cubic-bezier(0.34,1.56,0.64,1) both; }
+
+@keyframes slideUp {
+  from { transform: translateY(40px); opacity:0; }
+  to   { transform: translateY(0);    opacity:1; }
+}
+.slide-up { animation: slideUp 0.35s ease both; }
+
+@keyframes pixelFlash {
+  0%,100% { filter: brightness(1); }
+  50%     { filter: brightness(2.5) saturate(0); }
+}
+.pixel-flash { animation: pixelFlash 0.15s steps(2) 3; }
+
+@keyframes walkCycle {
+  0%   { background-position-y: 0px; }
+  25%  { background-position-y: -32px; }
+  50%  { background-position-y: -64px; }
+  75%  { background-position-y: -96px; }
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+/* ── SCROLLBAR ─────────────────────────────────────── */
+::-webkit-scrollbar { width: 8px; height: 8px; }
+::-webkit-scrollbar-track { background: var(--gba-dark); }
+::-webkit-scrollbar-thumb { background: var(--gba-mid); border-radius: 4px; }
+
+/* ── SELECTION ─────────────────────────────────────── */
+::selection { background: var(--gba-accent); color: #fff; }
+
+/* ── RESPONSIVE BASE ───────────────────────────────── */
+@media (max-width: 480px) {
+  :root { --pixel: 1px; }
+}

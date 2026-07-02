@@ -1,0 +1,190 @@
+/* ═══════════════════════════════════════════════════════
+   REPTILIA.IO — DIALOG & EXTRA STYLES
+═══════════════════════════════════════════════════════ */
+
+/* ── TITLE SPRITES (CSS pixel art) ───────────────────── */
+.sprite-snake {
+  background:
+    linear-gradient(#2ecc71,#2ecc71) 16px 28px / 32px 8px no-repeat,
+    linear-gradient(#27ae60,#27ae60) 12px 24px / 40px 4px no-repeat,
+    linear-gradient(#e74c3c,#e74c3c) 8px 20px / 12px 12px no-repeat,
+    linear-gradient(#ffcc00,#ffcc00) 4px 22px / 8px 8px no-repeat,
+    linear-gradient(#27ae60,#27ae60) 24px 32px / 4px 8px no-repeat,
+    linear-gradient(#27ae60,#27ae60) 36px 36px / 4px 6px no-repeat,
+    transparent;
+}
+
+.sprite-dino {
+  background:
+    /* body */
+    linear-gradient(#e67e22,#e67e22) 16px 12px / 32px 40px no-repeat,
+    /* head */
+    linear-gradient(#e67e22,#e67e22) 32px 4px / 24px 20px no-repeat,
+    /* eye */
+    linear-gradient(#000,#000) 44px 10px / 6px 6px no-repeat,
+    /* teeth */
+    linear-gradient(#fff,#fff) 36px 20px / 4px 4px no-repeat,
+    /* spikes */
+    linear-gradient(#c0392b,#c0392b) 20px 4px / 6px 10px no-repeat,
+    linear-gradient(#c0392b,#c0392b) 28px 0px / 6px 14px no-repeat,
+    /* tail */
+    linear-gradient(#e67e22,#e67e22) 4px 32px / 16px 8px no-repeat,
+    /* legs */
+    linear-gradient(#d35400,#d35400) 20px 48px / 8px 12px no-repeat,
+    linear-gradient(#d35400,#d35400) 36px 48px / 8px 12px no-repeat,
+    transparent;
+}
+
+.sprite-turtle {
+  background:
+    /* shell */
+    linear-gradient(#27ae60,#27ae60) 8px 12px / 48px 36px no-repeat,
+    /* shell pattern */
+    linear-gradient(#1e8449,#1e8449) 16px 16px / 14px 14px no-repeat,
+    linear-gradient(#1e8449,#1e8449) 34px 16px / 14px 14px no-repeat,
+    linear-gradient(#1e8449,#1e8449) 24px 28px / 16px 14px no-repeat,
+    /* head */
+    linear-gradient(#2ecc71,#2ecc71) 24px 4px / 16px 12px no-repeat,
+    /* eye */
+    linear-gradient(#000,#000) 26px 6px / 4px 4px no-repeat,
+    /* legs */
+    linear-gradient(#2ecc71,#2ecc71) 4px 24px / 8px 10px no-repeat,
+    linear-gradient(#2ecc71,#2ecc71) 52px 24px / 8px 10px no-repeat,
+    linear-gradient(#2ecc71,#2ecc71) 12px 44px / 10px 8px no-repeat,
+    linear-gradient(#2ecc71,#2ecc71) 42px 44px / 10px 8px no-repeat,
+    transparent;
+}
+
+/* ── MENU SCREEN OVERLAY ──────────────────────────────── */
+.screen-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.7);
+  z-index: 300;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  backdrop-filter: blur(4px);
+}
+
+/* ── SCROLL TEXT EFFECT ────────────────────────────────── */
+.typewriter-char {
+  display: inline;
+}
+
+/* ── NOTIFICATION BADGES ──────────────────────────────── */
+.zone-cleared-badge {
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  background: var(--gba-gold);
+  color: #000;
+  font-family: var(--font-pixel);
+  font-size: 6px;
+  padding: 2px 4px;
+  border-radius: 3px;
+  border: 2px solid #000;
+  animation: popIn 0.3s ease;
+}
+
+/* ── EXPERIENCE POPUP ─────────────────────────────────── */
+.exp-popup {
+  position: fixed;
+  z-index: 500;
+  font-family: var(--font-pixel);
+  font-size: 10px;
+  color: #ffe066;
+  text-shadow: 0 0 8px rgba(255,224,102,0.8), 1px 1px 0 #000;
+  pointer-events: none;
+  animation: expFloat 1.2s ease-out forwards;
+}
+@keyframes expFloat {
+  0%   { opacity:1; transform: translateY(0); }
+  100% { opacity:0; transform: translateY(-40px); }
+}
+
+/* ── PROGRESS DOTS ────────────────────────────────────── */
+.progress-dots {
+  display: flex;
+  gap: 4px;
+  align-items: center;
+}
+.progress-dot {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  border: 2px solid #888;
+  background: #333;
+  transition: background 0.3s, border-color 0.3s, transform 0.2s;
+}
+.progress-dot.done    { background: var(--gba-green); border-color: #1a6e1a; transform: scale(1.1); }
+.progress-dot.current { background: var(--gba-gold);  border-color: #b07800; animation: blink 0.8s step-end infinite; }
+
+/* ── LOADING SPINNER ──────────────────────────────────── */
+.loading-spinner {
+  width: 32px; height: 32px;
+  border: 4px solid rgba(255,255,255,0.1);
+  border-top-color: var(--gba-gold);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+/* ── PIXEL DIVIDER ────────────────────────────────────── */
+.pixel-divider {
+  height: 4px;
+  background: repeating-linear-gradient(
+    90deg,
+    var(--gba-gold) 0px, var(--gba-gold) 8px,
+    transparent 8px, transparent 12px
+  );
+  margin: 8px 0;
+  opacity: 0.6;
+}
+
+/* ── INFO CARDS (lesson supplements) ────────────────────── */
+.info-card {
+  background: rgba(0,100,200,0.1);
+  border-left: 4px solid var(--gba-blue);
+  padding: 6px 10px;
+  border-radius: 0 4px 4px 0;
+  margin: 6px 0;
+}
+.info-card.warning {
+  border-left-color: var(--gba-gold);
+  background: rgba(200,150,0,0.1);
+}
+.info-card.danger {
+  border-left-color: var(--gba-accent);
+  background: rgba(200,0,0,0.1);
+}
+.info-card.success {
+  border-left-color: var(--gba-green);
+  background: rgba(0,150,60,0.1);
+}
+
+/* ── STAR RATING ──────────────────────────────────────── */
+.star-rating {
+  display: flex;
+  gap: 4px;
+}
+.star {
+  font-size: 18px;
+  filter: grayscale(1) brightness(0.5);
+  transition: filter 0.2s;
+}
+.star.lit {
+  filter: none;
+  animation: popIn 0.3s ease;
+}
+
+/* ── SCREEN RESPONSIVE ADJUSTMENTS ───────────────────── */
+#screen-zone {
+  flex-direction: column;
+  background: var(--screen-bg);
+}
+@media (max-width: 480px) {
+  .hud-xp-bar { width: 60px; }
+  .hud-badges { max-width: 100px; }
+  .controls-bar { padding: 6px 10px; }
+  .dpad-btn { width: 30px; height: 30px; font-size: 10px; }
+  .ab-btn { width: 34px; height: 34px; font-size: 9px; }
+}
